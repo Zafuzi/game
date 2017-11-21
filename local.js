@@ -43,13 +43,15 @@ class Button{
       self.elem.setAttributeNS(null, 'stroke', 'none');
     })
     if(self.enable_drag){
-      self.elem.addEventListener('mouseup', function(e){
-        objectCode = function(){}
-        let bounds = self.elem.getBoundingClientRect();
-        if(bounds.x - 5 < 200){
-          self.elem.remove()
-        }
-      })
+      ("mouseup touchend".split(" ")).forEach(function(e){
+        self.elem.addEventListener(e, function(){
+          objectCode = function(){}
+          let bounds = self.elem.getBoundingClientRect();
+          if(bounds.x - 5 < 200){
+            self.elem.remove()
+          }
+        },false);
+      });
     }
   }
   click(cb){
@@ -114,19 +116,21 @@ class Box extends Button{
     this.elem.classList.add('box')
 
     let self = this;
-    this.elem.addEventListener('mousedown', function(){
-      if(self.canInstance){
-        let newb = new Box('b', 'b', self.height, self.width, self.bgColor, self.position, false)
-        objects.push(newb)
-        objectCode = function(e){
-          newb.drag(mouseX, mouseY)
+    ("mousedown touchstart".split(" ")).forEach(function(e){
+      self.elem.addEventListener(e, function(){
+        if(self.canInstance){
+          let newb = new Box('b', 'b', self.height, self.width, self.bgColor, self.position, false)
+          objects.push(newb)
+          objectCode = function(e){
+            newb.drag(mouseX, mouseY)
+          }
+          console.log("CAN INSTANCE")
+        }else{
+          objectCode = function(e){
+            self.drag(mouseX, mouseY)
+          }
         }
-        console.log("CAN INSTANCE")
-      }else{
-        objectCode = function(e){
-          self.drag(mouseX, mouseY)
-        }
-      }
+      })
     })
   }
 }
@@ -211,6 +215,7 @@ class Triangle extends Button{
 
 function init(){
   objectCode = function(){return}
+  document.ontouchmove = handleMouseMove
   document.onmousemove = handleMouseMove
 
   let shelf = document.createElementNS(svgns, 'rect');
@@ -270,8 +275,14 @@ function handleMouseMove(e){
       (doc && doc.scrollTop || body && body.scrollTop || 0) -
       (doc && doc.clientTop || body && body.clientTop || 0)
   }
-  mouseX = e.pageX
-  mouseY = e.pageY
+  if(e.targetTouches){
+    mouseX = e.targetTouches[0].pageX
+    mouseY = e.targetTouches[0].pageY
+  }else{
+    mouseX = e.pageX
+    mouseY = e.pageY
+  }
+  console.log(mouseX, mouseY)
   objectCode();
 }
 
