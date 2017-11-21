@@ -1,0 +1,56 @@
+body, html{
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-family: sans-serif;
+  overflow: hidden;
+  background: #555;
+}
+#container{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-flow: row wrap;
+}
+.button{
+  user-select: none;
+  position: absolute;
+  padding: 2px;
+  height: 50px;
+  width: 100%;
+}
+.box{
+  background-color: #333;
+}
+.circle{
+  background-color: #333;
+}
+#shelf{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100vh;
+  background: rgba(0,0,0,/18);
+}
+#grid{
+  width: auto;
+  position: absolute;
+  left: 200px;
+  right: 0;
+  height: 100vh;
+  background: rgba(0,0,100, .26);
+}
+#blue_box{
+  background-color: #eee;
+  left: 210px;
+  top: 70px;
+}
+
+#fpsDisplay{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
